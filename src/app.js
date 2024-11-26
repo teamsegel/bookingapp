@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from 'react-dom/client';
 import { Provider, defaultTheme, Form, TextField, Checkbox, Button } from "@adobe/react-spectrum";
 
 const App = () => {
@@ -89,4 +89,5 @@ const App = () => {
     );
 };
 
-ReactDOM.render(<App />, document.getElementById("root"));
+const root = createRoot(document.getElementById("root"))
+root.render(<App />)
