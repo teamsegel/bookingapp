@@ -53,6 +53,8 @@ const App = () => {
             <Form onSubmit={addAppointment}>
                 <TextField
                     label="Name"
+                    // TODO:
+                    // Placeholders are deprecated due to accessibility issues. Please use help text instead. See the docs for details: https://react-spectrum.adobe.com/react-spectrum/TextField.html#help-text
                     placeholder="Enter your name"
                     value={newName}
                     onChange={setNewName} // Update state on input change
