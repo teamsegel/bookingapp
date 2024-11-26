@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "booking-app",
   "version": "1.0.0",
   "main": "index.js",
@@ -9,6 +10,7 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "json-server": "^1.0.0-beta.3",
     "parcel": "^2.13.0",
     "process": "^0.11.10"
   }
