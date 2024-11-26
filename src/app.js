@@ -22,7 +22,8 @@ const App = () => {
     }, []); // Empty dependency array means this runs only once, on mount
 
     // Function to add a new appointment
-    const addAppointment = () => {
+    const addAppointment = (e) => {
+        e.preventDefault() // prevent browser from submitting the form, we'll do it here in this func
         const newAppointment = { id: Date.now().toString(), name: newName, time: newTime };
 
         // Update the local state immediately
@@ -49,7 +50,7 @@ const App = () => {
 
     return (
         <Provider theme={defaultTheme}>
-            <Form>
+            <Form onSubmit={addAppointment}>
                 <TextField
                     label="Name"
                     placeholder="Enter your name"
@@ -63,7 +64,7 @@ const App = () => {
                     onChange={setNewTime} // Update state on input change
                 />
                 <Checkbox>Confirm Appointment</Checkbox>
-                <Button variant="cta" onPress={addAppointment}>Book Appointment</Button>
+                <Button variant="cta" type="submit">Book Appointment</Button>
             </Form>
             
             <h3>Appointments</h3>
