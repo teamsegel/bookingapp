@@ -23,7 +23,7 @@ const App = () => {
 
     // Function to add a new appointment
     const addAppointment = () => {
-        const newAppointment = { id: Date.now(), name: newName, time: newTime };
+        const newAppointment = { id: Date.now().toString(), name: newName, time: newTime };
 
         // Update the local state immediately
         setAppointments([...appointments, newAppointment]);
