@@ -27,6 +27,8 @@ const App = () => {
         const newAppointment = { id: Date.now().toString(), name: newName, time: newTime };
 
         // Update the local state immediately
+        setNewName("") // reset text fields
+        setNewTime("")
         setAppointments([...appointments, newAppointment]);
 
         // Persist the new appointment to json-server
