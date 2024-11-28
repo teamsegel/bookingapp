@@ -3,7 +3,7 @@ import TimeSelector from "./TimeSelector";
 
 const BookingSearch = () => {
     const [isTimeSelectorOpen, setIsTimeSelectorOpen] = useState(false);
-    const [selectedTimePeriod, setSelectedTimePeriod] = useState("Select Time");
+    const [selectedTimeWindow, setSelectedTimeWindow] = useState("Any time");
 
     const handleOpenTimeSelector = () => {
         setIsTimeSelectorOpen(true);
@@ -14,12 +14,12 @@ const BookingSearch = () => {
     };
 
     const handleDoneTimeSelector = (timePeriod, fromTime, toTime) => {
-        if (timePeriod === "Any time") {
-            setSelectedTimePeriod("Any time");
-        } else if (fromTime && toTime) {
-            setSelectedTimePeriod(`${fromTime} - ${toTime}`);
+        if (timePeriod === "Custom" && fromTime && toTime) {
+            setSelectedTimeWindow(`${fromTime} - ${toTime}`);
+        } else if (timePeriod === "Any time") {
+            setSelectedTimeWindow("Any time");
         } else {
-            setSelectedTimePeriod(timePeriod);
+            setSelectedTimeWindow(timePeriod);
         }
         setIsTimeSelectorOpen(false);
     };
@@ -41,10 +41,8 @@ const BookingSearch = () => {
                 <div className="date-time-container">
                     <input type="date" className="date-input" />
                     <button className="time-button" onClick={handleOpenTimeSelector}>
-                    {selectedTimePeriod}
+                        {selectedTimeWindow}
                     </button>
-
-
                 </div>
                 <button className="search-button">Search Timy</button>
             </div>
