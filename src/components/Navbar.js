@@ -1,22 +1,39 @@
-import React from "react";
-import "./Navbar.css"; // Import the corresponding CSS file
+import React, { useState } from "react";
+import DropdownMenu from "./DropdownMenu";
+import "./Navbar.css";
 
 const Navbar = () => {
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
+
+    const closeDropdown = () => {
+        setIsDropdownOpen(false);
+    };
+
     return (
         <nav className="navbar">
-            {/* Left Logo */}
             <div className="navbar-logo">
                 <h1>Timy</h1>
             </div>
-
-            {/* Right Section */}
             <div className="navbar-right">
+                {/* For Business Button */}
                 <button className="business-btn">For business</button>
-                <div className="menu-icon">
+
+                {/* Log in Button */}
+                <button className="login-btn">Log in</button>
+
+                {/* Hamburger Menu */}
+                <div className="menu-icon" onClick={toggleDropdown}>
                     <span></span>
                     <span></span>
                     <span></span>
                 </div>
+
+                {/* Dropdown Menu */}
+                <DropdownMenu isOpen={isDropdownOpen} onClose={closeDropdown} />
             </div>
         </nav>
     );
