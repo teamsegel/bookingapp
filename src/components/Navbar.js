@@ -6,7 +6,7 @@ const Navbar = () => {
         <nav className="navbar">
             {/* Left Logo */}
             <div className="navbar-logo">
-                <h1>fresha</h1>
+                <h1>Timy</h1>
             </div>
 
             {/* Right Section */}

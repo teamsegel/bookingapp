@@ -22,7 +22,7 @@ const BookingSearch = () => {
                     <input type="date" className="date-input" />
                     <input type="time" className="time-input" />
                 </div>
-                <button className="search-button">Search Fresha</button>
+                <button className="search-button">Search Timy</button>
             </div>
 
             {/* Footer */}
