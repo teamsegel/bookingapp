@@ -1,12 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
+import TimeSelector from "./TimeSelector";
 
 const BookingSearch = () => {
+    const [isTimeSelectorOpen, setIsTimeSelectorOpen] = useState(false);
+    const [selectedTimePeriod, setSelectedTimePeriod] = useState("Select Time");
+
+    const handleOpenTimeSelector = () => {
+        setIsTimeSelectorOpen(true);
+    };
+
+    const handleCloseTimeSelector = () => {
+        setIsTimeSelectorOpen(false);
+    };
+
+    const handleDoneTimeSelector = (timePeriod, fromTime, toTime) => {
+        if (timePeriod === "Any time") {
+            setSelectedTimePeriod("Any time");
+        } else if (fromTime && toTime) {
+            setSelectedTimePeriod(`${fromTime} - ${toTime}`);
+        } else {
+            setSelectedTimePeriod(timePeriod);
+        }
+        setIsTimeSelectorOpen(false);
+    };
+
     return (
         <div className="booking-container">
-            {/* Header */}
             <h1 className="booking-header">Book local beauty and wellness services</h1>
-
-            {/* Search Form */}
             <div className="search-box">
                 <input
                     type="text"
@@ -20,20 +40,24 @@ const BookingSearch = () => {
                 />
                 <div className="date-time-container">
                     <input type="date" className="date-input" />
-                    <input type="time" className="time-input" />
+                    <button className="time-button" onClick={handleOpenTimeSelector}>
+                    {selectedTimePeriod}
+                    </button>
+
+
                 </div>
                 <button className="search-button">Search Timy</button>
             </div>
-
-            {/* Footer */}
             <p className="booking-stats">
                 <strong>649,192</strong> appointments booked today
             </p>
 
-            {/* App Button */}
-            <div className="get-app">
-                <button className="get-app-button">Get the app</button>
-            </div>
+            {isTimeSelectorOpen && (
+                <TimeSelector
+                    onClose={handleCloseTimeSelector}
+                    onDone={handleDoneTimeSelector}
+                />
+            )}
         </div>
     );
 };
