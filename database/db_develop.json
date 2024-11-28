@@ -1,0 +1,17 @@
+{
+    "appts": [
+        {
+            "appt_id": 1,
+            "customer_freeform_name": "Bob",
+            "customer_notes": "Men's haircut please.",
+            "appt_at_freeform": "2024-10-09 10:00 AM"
+        }
+    ],
+    "bizs": [
+        {
+            "biz_id": 1,
+            "name": "Joe' Barbershop",
+            "description": "We do 'x'. This is our team. We are at Street 1a. Open from 10am. Customers say this about us"
+        }
+    ]
+}
