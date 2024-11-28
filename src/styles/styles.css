@@ -1,0 +1,110 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom, #ffffff, #f7e8ff);
+}
+
+/* Booking Search Container */
+.booking-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 50px;
+}
+
+/* Header */
+.booking-header {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+/* Search Box */
+.search-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 500px;
+}
+
+.search-input {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    width: 100%;
+}
+
+.date-time-container {
+    display: flex;
+    gap: 10px;
+}
+
+.date-input,
+.time-input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+/* Search Button */
+.search-button {
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.search-button:hover {
+    background-color: #444;
+}
+
+/* Booking Stats */
+.booking-stats {
+    margin-top: 20px;
+    font-size: 1rem;
+    color: #333;
+}
+
+/* Get App Section */
+.get-app {
+    margin-top: 30px;
+}
+
+.get-app-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.get-app-button:hover {
+    background-color: #444;
+}
+
+
+@media (max-width: 768px) {
+    .search-box {
+        width: 100%;
+    }
+
+    .date-time-container {
+        flex-direction: column;
+    }
+}

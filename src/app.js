@@ -1,98 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { createRoot } from 'react-dom/client';
-import { Provider, defaultTheme, Form, TextField, Checkbox, Button } from "@adobe/react-spectrum";
+import React from "react";
+import ReactDOM from "react-dom";
+import Navbar from "./components/Navbar"; // Import Navbar
+import BookingSearch from "./components/BookingSearch"; // Import BookingSearch
+import "./styles/styles.css"; // Import global styles
 
 const App = () => {
-    const [appointments, setAppointments] = useState([]); // State to hold fetched data
-    const [error, setError] = useState(null); // State to handle errors
-    const [newName, setNewName] = useState(""); // State for new appointment name
-    const [newTime, setNewTime] = useState(""); // State for new appointment time
-
-    // Fetch data from Typicode server
-    useEffect(() => {
-        fetch("http://localhost:3000/appointments") // URL where json-server is running
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then((data) => setAppointments(data)) // Update state with fetched data
-            .catch((err) => setError(err.message)); // Catch and set any errors
-    }, []); // Empty dependency array means this runs only once, on mount
-
-    // Function to add a new appointment
-    const addAppointment = (e) => {
-        e.preventDefault() // prevent browser from submitting the form, we'll do it here in this func
-        const newAppointment = { id: Date.now().toString(), name: newName, time: newTime };
-
-        // Update the local state immediately
-        setNewName("") // reset text fields
-        setNewTime("")
-        setAppointments([...appointments, newAppointment]);
-
-        // Persist the new appointment to json-server
-        fetch("http://localhost:3000/appointments", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newAppointment),
-        }).catch((err) => setError(err.message)); // Handle potential errors
-    };
-
-    // Function to delete an appointment
-    const deleteAppointment = (id) => {
-        // Update the local state immediately
-        setAppointments(appointments.filter((appointment) => appointment.id !== id));
-
-        // Delete the appointment from json-server
-        fetch(`http://localhost:3000/appointments/${id}`, {
-            method: "DELETE",
-        }).catch((err) => setError(err.message)); // Handle potential errors
-    };
-
     return (
-        <Provider theme={defaultTheme}>
-            <Form onSubmit={addAppointment}>
-                <TextField
-                    label="Name"
-                    // TODO:
-                    // Placeholders are deprecated due to accessibility issues. Please use help text instead. See the docs for details: https://react-spectrum.adobe.com/react-spectrum/TextField.html#help-text
-                    placeholder="Enter your name"
-                    value={newName}
-                    onChange={setNewName} // Update state on input change
-                />
-                <TextField
-                    label="Time"
-                    placeholder="Enter time"
-                    value={newTime}
-                    onChange={setNewTime} // Update state on input change
-                />
-                <Checkbox>Confirm Appointment</Checkbox>
-                <Button variant="cta" type="submit">Book Appointment</Button>
-            </Form>
-            
-            <h3>Appointments</h3>
-            {error ? (
-                <p style={{ color: "red" }}>Error: {error}</p>
-            ) : (
-                <ul>
-                    {appointments.map((appointment) => (
-                        <li key={appointment.id}>
-                            {appointment.name} - {appointment.time}
-                            <Button
-                                variant="negative"
-                                onPress={() => deleteAppointment(appointment.id)}
-                                style={{ marginLeft: "10px" }}
-                            >
-                                Delete
-                            </Button>
-                        </li>
-                    ))}
-                </ul>
-            )}
-        </Provider>
+        <>
+            <Navbar /> {/* Add Navbar */}
+            <BookingSearch />
+        </>
     );
 };
 
-const root = createRoot(document.getElementById("root"))
-root.render(<App />)
+ReactDOM.render(<App />, document.getElementById("root"));
