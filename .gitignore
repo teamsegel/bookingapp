@@ -2,3 +2,6 @@
 dist/
 node_modules/
 database/db.json
+fastapi/.venv
+fastapi/__pycache__
+fastapi/bookingapp.db
