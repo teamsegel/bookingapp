@@ -11,7 +11,7 @@ mv db/db_example.json db/db.json # make a working copy db.json
 2. Run
 
 ```bash
-yarn json-server database/db.json
+yarn json-server database/db_develop.json
 yarn parcel src/index.html
 ```
 
