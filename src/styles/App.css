@@ -180,24 +180,6 @@
     width: 100%;
   }
   
-  .submit-button {
-    margin-top: 1rem;
-    width: 100%;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 5px;
-    padding: 0.75rem;
-    font-size: 1rem;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .submit-button:hover {
-    background-color: #0056b3;
-  }
-  
-
   .customer-button {
     background-color: #fff;
     color: #000;
@@ -212,38 +194,38 @@
     background-color: #007bff;
     color: #fff;
   }
-
-  .business-section {
-    margin-top: 80px;
+  
+  /* Business Page Section */
+.business-section {
+    margin-top: 80px; /* Ensure it doesn't overlap with the navbar */
     padding: 2rem;
+    text-align: center;
   }
   
   .business-heading {
-    text-align: center;
+    font-size: 2rem;
     margin-bottom: 2rem;
   }
   
   .business-form {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    max-width: 500px;
+    gap: 1.5rem;
+    max-width: 600px;
     margin: 0 auto;
   }
   
-  .add-salon-button {
-    margin-top: 1rem;
-    width: 100%;
+  .submit-business-button {
     background-color: #007bff;
     color: #fff;
-    border-radius: 5px;
     padding: 0.75rem;
-    font-size: 1rem;
+    border-radius: 5px;
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
   
-  .add-salon-button:hover {
+  .submit-business-button:hover {
     background-color: #0056b3;
   }
+  

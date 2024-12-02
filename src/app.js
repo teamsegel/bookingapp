@@ -3,24 +3,19 @@ import { Button, Flex, Heading, TextField } from "@adobe/react-spectrum";
 import "./styles/App.css";
 
 const App = () => {
-  const [showResults, setShowResults] = useState(false);
-  const [isBusinessPage, setIsBusinessPage] = useState(false); // Tracks if we're on the business page
-  const [salonDetails, setSalonDetails] = useState({
-    id: "",
-    name: "",
-    distance: "",
-    address: "",
-    services: [{ name: "", price: "", time: "" }],
-    image: "",
-    rating: "",
-    reviews: "",
+  const [searchParams, setSearchParams] = useState({
+    salonName: "",
+    location: "",
+    date: "",
+    time: "",
   });
-
   const [results, setResults] = useState([]);
+  const [showResults, setShowResults] = useState(false);
   const [selectedSalon, setSelectedSalon] = useState(null);
+  const [isBusinessPage, setIsBusinessPage] = useState(false);
 
   useEffect(() => {
-    // Simulate fetching data
+    // Simulate fetching data from db_develop.json
     const fetchSalons = async () => {
       const mockData = [
         {
@@ -33,52 +28,73 @@ const App = () => {
           rating: "4.8",
           reviews: "20",
         },
+        {
+          id: 2,
+          name: "Another Salon",
+          distance: "2.8 km",
+          address: "456 Example Ave",
+          services: [{ name: "Manicure", price: "$15", time: "11:00 AM" }],
+          image: "",
+          rating: "4.6",
+          reviews: "15",
+        },
       ];
       setResults(mockData);
     };
     fetchSalons();
   }, []);
 
-  const handleSalonInputChange = (key, value, index = null) => {
-    if (index !== null) {
-      // Update services
-      const updatedServices = [...salonDetails.services];
-      updatedServices[index][key] = value;
-      setSalonDetails({ ...salonDetails, services: updatedServices });
-    } else {
-      // Update other salon fields
-      setSalonDetails({ ...salonDetails, [key]: value });
-    }
+  const handleSearch = () => {
+    setShowResults(true);
   };
 
-  const handleAddSalon = () => {
-    const newSalon = { ...salonDetails, id: results.length + 1 };
-    setResults([...results, newSalon]);
-    setSalonDetails({
-      id: "",
-      name: "",
-      distance: "",
-      address: "",
-      services: [{ name: "", price: "", time: "" }],
-      image: "",
-      rating: "",
-      reviews: "",
+  const handleInputChange = (key, value) => {
+    setSearchParams({ ...searchParams, [key]: value });
+  };
+
+  const handleSalonSelect = (salon) => {
+    setSelectedSalon(salon);
+  };
+
+  const handleBookingSubmit = () => {
+    alert("Booking submitted successfully!");
+    setSelectedSalon(null); // Close the expanded view
+  };
+
+  const resetToBookingPage = () => {
+    setShowResults(false);
+    setIsBusinessPage(false);
+    setSearchParams({
+      salonName: "",
+      location: "",
+      date: "",
+      time: "",
     });
-    setIsBusinessPage(false); // Return to customer page after adding
+    setSelectedSalon(null);
+  };
+
+  const handleBusinessInputChange = (key, value) => {
+    setSelectedSalon({ ...selectedSalon, [key]: value });
+  };
+
+  const handleBusinessSubmit = () => {
+    alert(`Business Details Submitted:\n${JSON.stringify(selectedSalon, null, 2)}`);
+    setIsBusinessPage(false);
+    setSelectedSalon(null);
   };
 
   return (
     <div className="page-container">
       {/* Navbar */}
       <nav className="navbar">
-        <div className="logo" onClick={() => setShowResults(false)} style={{ cursor: "pointer" }}>
+        <div className="logo" onClick={resetToBookingPage} style={{ cursor: "pointer" }}>
           fresha
         </div>
         <Flex direction="row" alignItems="center" gap="size-200">
           <Button variant="primary" className="business-button" onPress={() => setIsBusinessPage(true)}>
             For business
           </Button>
-          <Button variant="primary" className="customer-button" onPress={() => setIsBusinessPage(false)}>
+          <Button variant="primary" className="customer-button" onPress={resetToBookingPage}>
             Customer
           </Button>
           <Button isQuiet className="menu-button">
@@ -88,98 +104,136 @@ const App = () => {
       </nav>
 
       {/* Page Content */}
-      {!isBusinessPage ? (
-        !showResults ? (
-          <div className="hero-section">
-            <Heading level={1} className="hero-text">
-              Book local beauty and wellness services
-            </Heading>
-            {/* Search Section */}
-            <div className="search-box">
-              <Flex direction="row" gap="size-150" width="100%">
-                <TextField aria-label="Salon Name" placeholder="Name of the Salon" flex />
-                <TextField aria-label="Location" placeholder="Location" flex />
-              </Flex>
-              <Flex direction="row" gap="size-150" width="100%">
-                <TextField aria-label="Date" type="date" flex />
-                <TextField aria-label="Time" type="time" flex />
-              </Flex>
-              <Button variant="cta" className="search-button" onPress={() => setShowResults(true)}>
-                Search Services
-              </Button>
-            </div>
-          </div>
-        ) : (
-          <div className="results-section">
-            <Heading level={2} className="results-heading">
-              Salons matching your search
-            </Heading>
-            <div className="results-container">
-              {results.map((salon) => (
-                <div
-                  className={`salon-card ${selectedSalon?.id === salon.id ? "selected" : ""}`}
-                  key={salon.id}
-                  onClick={() => setSelectedSalon(salon)}
-                >
-                  <Heading level={3}>{salon.name || "No Name Available"}</Heading>
-                  <p>{salon.address || "No Address Available"}</p>
-                  <p>{salon.distance || "No Distance Available"}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )
-      ) : (
+      {isBusinessPage ? (
         <div className="business-section">
           <Heading level={2} className="business-heading">
-            Add Your Salon
+            Add Your Business
           </Heading>
           <div className="business-form">
             <TextField
-              aria-label="Salon Name"
-              placeholder="Salon Name"
-              value={salonDetails.name}
-              onChange={(e) => handleSalonInputChange("name", e)}
+              aria-label="Business Name"
+              placeholder="Enter Business Name"
+              value={selectedSalon?.name || ""}
+              onChange={(e) => handleBusinessInputChange("name", e)}
               flex
             />
             <TextField
-              aria-label="Distance"
-              placeholder="Distance"
-              value={salonDetails.distance}
-              onChange={(e) => handleSalonInputChange("distance", e)}
+              aria-label="Description"
+              placeholder="Enter Description"
+              value={selectedSalon?.description || ""}
+              onChange={(e) => handleBusinessInputChange("description", e)}
               flex
             />
             <TextField
-              aria-label="Address"
-              placeholder="Address"
-              value={salonDetails.address}
-              onChange={(e) => handleSalonInputChange("address", e)}
+              aria-label="Working Hours"
+              placeholder="Enter Working Hours (e.g., 9 AM - 6 PM)"
+              value={selectedSalon?.workingHours || ""}
+              onChange={(e) => handleBusinessInputChange("workingHours", e)}
               flex
             />
             <TextField
-              aria-label="Service Name"
-              placeholder="Service Name"
-              value={salonDetails.services[0].name}
-              onChange={(e) => handleSalonInputChange("name", e, 0)}
+              aria-label="Location"
+              placeholder="Enter Location"
+              value={selectedSalon?.location || ""}
+              onChange={(e) => handleBusinessInputChange("location", e)}
               flex
             />
-            <TextField
-              aria-label="Service Price"
-              placeholder="Service Price"
-              value={salonDetails.services[0].price}
-              onChange={(e) => handleSalonInputChange("price", e, 0)}
-              flex
-            />
-            <TextField
-              aria-label="Service Time"
-              placeholder="Service Time"
-              value={salonDetails.services[0].time}
-              onChange={(e) => handleSalonInputChange("time", e, 0)}
-              flex
-            />
-            <Button variant="cta" className="add-salon-button" onPress={handleAddSalon}>
-              Add Salon
+            <Button
+              variant="cta"
+              className="submit-business-button"
+              onPress={handleBusinessSubmit}
+            >
+              Submit Business
             </Button>
+          </div>
+        </div>
+      ) : !showResults ? (
+        <div className="hero-section">
+          <Heading level={1} className="hero-text">
+            Book local beauty and wellness services
+          </Heading>
+          {/* Search Section */}
+          <div className="search-box">
+            <Flex direction="row" gap="size-150" width="100%">
+              <TextField
+                aria-label="Salon Name"
+                placeholder="Name of the Salon"
+                value={searchParams.salonName}
+                onChange={(e) => handleInputChange("salonName", e)}
+                flex
+              />
+              <TextField
+                aria-label="Location"
+                placeholder="Location"
+                value={searchParams.location}
+                onChange={(e) => handleInputChange("location", e)}
+                flex
+              />
+            </Flex>
+            <Flex direction="row" gap="size-150" width="100%">
+              <TextField
+                aria-label="Date"
+                placeholder="Any date"
+                type="date"
+                value={searchParams.date}
+                onChange={(e) => handleInputChange("date", e)}
+                flex
+              />
+              <TextField
+                aria-label="Time"
+                placeholder="Any time"
+                type="time"
+                value={searchParams.time}
+                onChange={(e) => handleInputChange("time", e)}
+                flex
+              />
+            </Flex>
+            <Button variant="cta" className="search-button" onPress={handleSearch}>
+              Search Services
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <div className="results-section">
+          <Heading level={2} className="results-heading">
+            Salons matching your search
+          </Heading>
+          <div className="results-container">
+            {results.map((salon) => (
+              <div
+                className={`salon-card ${selectedSalon?.id === salon.id ? "selected" : ""}`}
+                key={salon.id}
+                onClick={() => handleSalonSelect(salon)}
+              >
+                <div className="salon-image">
+                  <img
+                    src={salon.image || "https://via.placeholder.com/150"}
+                    alt={salon.name || "Placeholder"}
+                    style={{ width: "100%", height: "100%", borderRadius: "10px" }}
+                  />
+                </div>
+                <div className="salon-details">
+                  <Heading level={3}>{salon.name || "No Name Available"}</Heading>
+                  <p>{salon.address || "No Address Available"}</p>
+                  <p>{salon.distance || "No Distance Available"}</p>
+                  {selectedSalon?.id === salon.id && (
+                    <div className="booking-form">
+                      <TextField label="Customer Name" placeholder="Enter your name" flex />
+                      <TextField label="Note" placeholder="Add a note" flex />
+                      <TextField label="Date" type="date" flex />
+                      <TextField label="Time" type="time" flex />
+                      <Button
+                        variant="cta"
+                        onPress={handleBookingSubmit}
+                        className="submit-button"
+                      >
+                        Confirm Booking
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       )}
