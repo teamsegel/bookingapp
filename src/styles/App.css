@@ -308,3 +308,13 @@
 .modal-buttons .cta-button:hover {
     background-color: #0056b3;
 }
+
+
+.modal p {
+    margin: 0.5rem 0;
+}
+
+.modal button {
+    margin-top: 1rem;
+    margin-right: 1rem;
+}

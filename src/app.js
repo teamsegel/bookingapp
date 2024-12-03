@@ -42,6 +42,32 @@ const App = () => {
     appt_duration: "",
   });
 
+  const handleDeleteAppointment = async (appointment) => {
+    try {
+        const response = await fetch(`http://localhost:3000/appts/${appointment.appt_id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (response.ok) {
+            alert("Appointment deleted successfully!");
+            // Remove the deleted appointment from the events list
+            setEvents((prevEvents) => prevEvents.filter((event) => event.appt_id !== appointment.appt_id));
+            setSelectedAppointment(null); // Close the modal
+        } else {
+            alert("Failed to delete appointment.");
+        }
+    } catch (error) {
+        console.error("Error deleting appointment:", error);
+    }
+};
+
+
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
+
+
   // Fetch appointments for the udar
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -231,56 +257,123 @@ const App = () => {
         </div>
       ) :isBusinessOverviewPage ? (
         <div className="business-overview-section">
-          <Heading level={2} className="overview-heading">
-            Appointments Overview
-          </Heading>
-          <Button variant="primary" onPress={() => setShowAddAppointmentModal(true)} style={{ marginBottom: "20px" }}>
-            Add Appointment
-          </Button>
-          <Calendar
-            localizer={localizer}
-            events={events}
-            startAccessor="start"
-            endAccessor="end"
-            style={{ height: 600, margin: "50px" }}
-            eventPropGetter={eventStyleGetter}
-          />
-          {showAddAppointmentModal && (
-    <div className="modal">
-        <Heading level={3}>Add New Appointment</Heading>
-        <TextField
-            label="Customer Name"
-            value={newAppointment.customer_freeform_name}
-            onChange={(value) => setNewAppointment({ ...newAppointment, customer_freeform_name: value })}
-        />
-        <TextField
-            label="Notes"
-            value={newAppointment.customer_notes}
-            onChange={(value) => setNewAppointment({ ...newAppointment, customer_notes: value })}
-        />
-        <TextField
-            label="Start Time (e.g., 2024-12-03 9:45 AM)"
-            value={newAppointment.appt_at_freeform}
-            onChange={(value) => setNewAppointment({ ...newAppointment, appt_at_freeform: value })}
-        />
-        <TextField
-            label="Duration (e.g., 20min)"
-            value={newAppointment.appt_duration}
-            onChange={(value) => setNewAppointment({ ...newAppointment, appt_duration: value })}
-        />
-        <Button variant="cta" onPress={handleAddAppointmentSubmit}>
-            Add Appointment
-        </Button>
-        <Button variant="secondary" onPress={() => setShowAddAppointmentModal(false)}>
-            Cancel
-        </Button>
-    </div>
-        )}
+            <Heading level={2} className="overview-heading">
+                Appointments Overview
+            </Heading>
+            <Button
+                variant="primary"
+                onPress={() => setShowAddAppointmentModal(true)}
+                style={{ marginBottom: "20px" }}
+            >
+                Add Appointment
+            </Button>
+            <Calendar
+                localizer={localizer}
+                events={events}
+                startAccessor="start"
+                endAccessor="end"
+                style={{ height: 600, margin: "50px" }}
+                eventPropGetter={eventStyleGetter}
+                onSelectEvent={(event) => setSelectedAppointment(event)} // Set selected appointment
+            />
+            {showAddAppointmentModal && (
+                <div className="modal">
+                    <Heading level={3}>Add New Appointment</Heading>
+                    <TextField
+                        label="Customer Name"
+                        value={newAppointment.customer_freeform_name}
+                        onChange={(value) =>
+                            setNewAppointment({
+                                ...newAppointment,
+                                customer_freeform_name: value,
+                            })
+                        }
+                    />
+                    <TextField
+                        label="Notes"
+                        value={newAppointment.customer_notes}
+                        onChange={(value) =>
+                            setNewAppointment({
+                                ...newAppointment,
+                                customer_notes: value,
+                            })
+                        }
+                    />
+                    <TextField
+                        label="Start Time (e.g., 2024-12-03 9:45 AM)"
+                        value={newAppointment.appt_at_freeform}
+                        onChange={(value) =>
+                            setNewAppointment({
+                                ...newAppointment,
+                                appt_at_freeform: value,
+                            })
+                        }
+                    />
+                    <TextField
+                        label="Duration (e.g., 20min)"
+                        value={newAppointment.appt_duration}
+                        onChange={(value) =>
+                            setNewAppointment({
+                                ...newAppointment,
+                                appt_duration: value,
+                            })
+                        }
+                    />
+                    <Button
+                        variant="cta"
+                        onPress={handleAddAppointmentSubmit}
+                    >
+                        Add Appointment
+                    </Button>
+                    <Button
+                        variant="secondary"
+                        onPress={() => setShowAddAppointmentModal(false)}
+                    >
+                        Cancel
+                    </Button>
+                </div>
+            )}
+            {selectedAppointment && (
+                <div className="modal">
+                    <Heading level={3}>Appointment Details</Heading>
+                    <p>
+                        <strong>Customer Name:</strong>{" "}
+                        {selectedAppointment.title.split(":")[0]}
+                    </p>
+                    <p>
+                        <strong>Notes:</strong>{" "}
+                        {selectedAppointment.description}
+                    </p>
+                    <p>
+                        <strong>Start Time:</strong>{" "}
+                        {moment(selectedAppointment.start).format(
+                            "YYYY-MM-DD hh:mm A"
+                        )}
+                    </p>
+                    <p>
+                        <strong>End Time:</strong>{" "}
+                        {moment(selectedAppointment.end).format(
+                            "YYYY-MM-DD hh:mm A"
+                        )}
+                    </p>
+                    <Button
+                        variant="cta"
+                        onPress={() =>
+                            handleDeleteAppointment(selectedAppointment)
+                        }
+                    >
+                        Delete Appointment
+                    </Button>
+                    <Button
+                        variant="secondary"
+                        onPress={() => setSelectedAppointment(null)}
+                    >
+                        Close
+                    </Button>
+                </div>
+            )}
         </div>
-
-
-
-      ) : !showResults ? (
+    ) : !showResults ? (
         <div className="hero-section">
           <Heading level={1} className="hero-text">
             Book local beauty and wellness services
