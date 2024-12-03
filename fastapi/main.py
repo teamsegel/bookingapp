@@ -2,6 +2,7 @@ import sqlite3
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
 from fastapi.routing import APIRoute
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 
@@ -33,6 +34,9 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(generate_unique_id_function=custom_generate_unique_id, lifespan=lifespan)
+app.add_middleware(
+    CORSMiddleware, allow_origins=["http://localhost:1234"], allow_methods=["*"]
+)
 
 
 class ReadAppointmentResponse(BaseModel):
