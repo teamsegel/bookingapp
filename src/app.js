@@ -39,13 +39,16 @@ const App = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const resp = await readAppointments()
-        const appts = resp.data
+    //    const resp = await readAppointments()  //to be bale to fetch from server
+    //    const appts = resp.data
+        const resp = await fetch("http://localhost:3000/appts");
+        const appts = await resp.json(); // Correctly parse JSON
 
         const parsedEvents = appts.map((appt) => {
-          const startTime = moment(appt.appt_at_freeform, "YYYY-MM-DD hh:mm A").toDate();
-          const endTime = new Date(startTime.getTime() + 45 * 60 * 1000); // 45-minute duration
-          return {
+            const startTime = moment(appt.appt_at_freeform, "YYYY-MM-DD hh:mm A").toDate();
+            const durationInMinutes = parseInt(appt.appt_duration) || 30; // Default to 30 minutes if duration is missing
+            const endTime = new Date(startTime.getTime() + durationInMinutes * 60*1000 );
+        return {
             title: `${appt.customer_freeform_name}: ${appt.customer_notes}`,
             start: startTime,
             end: endTime,
