@@ -4,10 +4,23 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./styles/App.css";
+import {client, readAppointments} from './client/sdk.gen'
+
+client.setConfig({baseUrl: 'http://localhost:8000'})
 
 const localizer = momentLocalizer(moment);
 
 const App = () => {
+  // example FastAPI usage
+  // look at client/sdk.gen file to see all available functions
+  useEffect(() => {
+    (async () => {
+      const resp = await readAppointments()
+      const appts = resp.data
+      console.log(appts)
+    })()
+  }, [])
+
   const [searchParams, setSearchParams] = useState({
     salonName: "",
     location: "",
