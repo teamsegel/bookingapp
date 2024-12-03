@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Button, Flex, Heading, TextField } from "@adobe/react-spectrum";
+import { Calendar, momentLocalizer } from "react-big-calendar";
+import moment from "moment";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./styles/App.css";
+
+const localizer = momentLocalizer(moment);
 
 const App = () => {
   const [searchParams, setSearchParams] = useState({
@@ -13,57 +18,73 @@ const App = () => {
   const [showResults, setShowResults] = useState(false);
   const [selectedSalon, setSelectedSalon] = useState(null);
   const [isBusinessPage, setIsBusinessPage] = useState(false);
+  const [isBusinessOverviewPage, setIsBusinessOverviewPage] = useState(false);
+  const [businesses, setBusinesses] = useState([]);
+  const [events, setEvents] = useState([]);
 
+  // Fetch appointments for the calendar
   useEffect(() => {
-    // Simulate fetching data from db_develop.json
-    const fetchSalons = async () => {
-      const mockData = [
-        {
-          id: 1,
-          name: "Sample Salon",
-          distance: "3.5 km",
-          address: "123 Example St",
-          services: [{ name: "Haircut", price: "$20", time: "10:00 AM" }],
-          image: "",
-          rating: "4.8",
-          reviews: "20",
-        },
-        {
-          id: 2,
-          name: "Another Salon",
-          distance: "2.8 km",
-          address: "456 Example Ave",
-          services: [{ name: "Manicure", price: "$15", time: "11:00 AM" }],
-          image: "",
-          rating: "4.6",
-          reviews: "15",
-        },
-      ];
-      setResults(mockData);
+    const fetchAppointments = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/appts");
+        const appts = await response.json();
+
+        const parsedEvents = appts.map((appt) => {
+          const startTime = moment(appt.appt_at_freeform, "YYYY-MM-DD hh:mm A").toDate();
+          const endTime = new Date(startTime.getTime() + 45 * 60 * 1000); // 45-minute duration
+          return {
+            title: `${appt.customer_freeform_name}: ${appt.customer_notes}`,
+            start: startTime,
+            end: endTime,
+            description: appt.customer_notes,
+          };
+        });
+
+        setEvents(parsedEvents);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
-    fetchSalons();
+
+    fetchAppointments();
   }, []);
 
-  const handleSearch = () => {
-    setShowResults(true);
+  // **New handleSearch Function**
+  const handleSearch = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/bizs");
+      const salons = await response.json();
+
+      // Filter salons based on search parameters (if needed)
+      const filteredSalons = salons.filter((salon) => {
+        return (
+          (!searchParams.salonName || salon.name.toLowerCase().includes(searchParams.salonName.toLowerCase())) &&
+          (!searchParams.location || salon.location?.toLowerCase().includes(searchParams.location.toLowerCase()))
+        );
+      });
+
+      setResults(filteredSalons);
+      setShowResults(true);
+    } catch (error) {
+      console.error("Error fetching salon data:", error);
+    }
   };
 
   const handleInputChange = (key, value) => {
     setSearchParams({ ...searchParams, [key]: value });
   };
 
-  const handleSalonSelect = (salon) => {
-    setSelectedSalon(salon);
-  };
+  const handleSalonSelect = (salon) => setSelectedSalon(salon);
 
   const handleBookingSubmit = () => {
     alert("Booking submitted successfully!");
-    setSelectedSalon(null); // Close the expanded view
+    setSelectedSalon(null);
   };
 
   const resetToBookingPage = () => {
     setShowResults(false);
     setIsBusinessPage(false);
+    setIsBusinessOverviewPage(false);
     setSearchParams({
       salonName: "",
       location: "",
@@ -73,15 +94,16 @@ const App = () => {
     setSelectedSalon(null);
   };
 
-  const handleBusinessInputChange = (key, value) => {
-    setSelectedSalon({ ...selectedSalon, [key]: value });
-  };
-
-  const handleBusinessSubmit = () => {
-    alert(`Business Details Submitted:\n${JSON.stringify(selectedSalon, null, 2)}`);
-    setIsBusinessPage(false);
-    setSelectedSalon(null);
-  };
+  const eventStyleGetter = () => ({
+    style: {
+      backgroundColor: "#3174ad",
+      borderRadius: "5px",
+      color: "white",
+      border: "none",
+      display: "block",
+      padding: "5px",
+    },
+  });
 
   return (
     <div className="page-container">
@@ -97,13 +119,13 @@ const App = () => {
           <Button variant="primary" className="customer-button" onPress={resetToBookingPage}>
             Customer
           </Button>
-          <Button isQuiet className="menu-button">
-            <span className="menu-icon">☰</span>
+          <Button variant="primary" className="overview-button" onPress={() => setIsBusinessOverviewPage(true)}>
+            Business Overview
           </Button>
         </Flex>
       </nav>
 
-      {/* Page Content */}
+      {/* Pages */}
       {isBusinessPage ? (
         <div className="business-section">
           <Heading level={2} className="business-heading">
@@ -113,46 +135,48 @@ const App = () => {
             <TextField
               aria-label="Business Name"
               placeholder="Enter Business Name"
-              value={selectedSalon?.name || ""}
-              onChange={(e) => handleBusinessInputChange("name", e)}
               flex
             />
             <TextField
               aria-label="Description"
               placeholder="Enter Description"
-              value={selectedSalon?.description || ""}
-              onChange={(e) => handleBusinessInputChange("description", e)}
               flex
             />
             <TextField
               aria-label="Working Hours"
               placeholder="Enter Working Hours (e.g., 9 AM - 6 PM)"
-              value={selectedSalon?.workingHours || ""}
-              onChange={(e) => handleBusinessInputChange("workingHours", e)}
               flex
             />
             <TextField
               aria-label="Location"
               placeholder="Enter Location"
-              value={selectedSalon?.location || ""}
-              onChange={(e) => handleBusinessInputChange("location", e)}
               flex
             />
-            <Button
-              variant="cta"
-              className="submit-business-button"
-              onPress={handleBusinessSubmit}
-            >
+            <Button variant="cta" className="submit-business-button">
               Submit Business
             </Button>
           </div>
+        </div>
+      ) : isBusinessOverviewPage ? (
+        <div className="business-overview-section">
+          <Heading level={2} className="overview-heading">
+            Appointments Overview
+          </Heading>
+          <Calendar
+            localizer={localizer}
+            events={events}
+            startAccessor="start"
+            endAccessor="end"
+            style={{ height: 600, margin: "50px" }}
+            eventPropGetter={eventStyleGetter}
+            tooltipAccessor={(event) => event.description}
+          />
         </div>
       ) : !showResults ? (
         <div className="hero-section">
           <Heading level={1} className="hero-text">
             Book local beauty and wellness services
           </Heading>
-          {/* Search Section */}
           <div className="search-box">
             <Flex direction="row" gap="size-150" width="100%">
               <TextField
@@ -199,27 +223,23 @@ const App = () => {
             Salons matching your search
           </Heading>
           <div className="results-container">
-            {results.map((salon) => (
-              <div
-                className={`salon-card ${selectedSalon?.id === salon.id ? "selected" : ""}`}
-                key={salon.id}
-                onClick={() => handleSalonSelect(salon)}
-              >
-                <div className="salon-image">
-                  <img
-                    src={salon.image || "https://via.placeholder.com/150"}
-                    alt={salon.name || "Placeholder"}
-                    style={{ width: "100%", height: "100%", borderRadius: "10px" }}
-                  />
-                </div>
-                <div className="salon-details">
-                  <Heading level={3}>{salon.name || "No Name Available"}</Heading>
-                  <p>{salon.address || "No Address Available"}</p>
-                  <p>{salon.distance || "No Distance Available"}</p>
-                  {selectedSalon?.id === salon.id && (
+            {results.length > 0 ? (
+              results.map((salon) => (
+                <div
+                  className={`salon-card ${selectedSalon?.biz_id === salon.biz_id ? "selected" : ""}`}
+                  key={salon.biz_id}
+                  onClick={() => handleSalonSelect(salon)}
+                >
+                  <div className="salon-details">
+                    <Heading level={3}>{salon.name || "No Name Available"}</Heading>
+                    <p>{salon.description || "No Description Available"}</p>
+                    <p>Location: {salon.location || "No Location Available"}</p>
+                    <p>Rating: {salon.rating || "No Rating Available"}</p>
+                  </div>
+                  {selectedSalon?.biz_id === salon.biz_id && (
                     <div className="booking-form">
                       <TextField label="Customer Name" placeholder="Enter your name" flex />
-                      <TextField label="Note" placeholder="Add a note" flex />
+                      <TextField label="Appointment Note" placeholder="Add a note" flex />
                       <TextField label="Date" type="date" flex />
                       <TextField label="Time" type="time" flex />
                       <Button
@@ -232,8 +252,10 @@ const App = () => {
                     </div>
                   )}
                 </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p>No salons found. Try adjusting your search criteria.</p>
+            )}
           </div>
         </div>
       )}

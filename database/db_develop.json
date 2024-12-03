@@ -1,21 +1,102 @@
 {
     "appts": [
-        {
-            "appt_id": 1,
-            "customer_freeform_name": "Bob",
-            "customer_notes": "Men's haircut please.",
-            "appt_at_freeform": "2024-10-09 10:00 AM"
-        }
+      {
+        "appt_id": 1,
+        "customer_freeform_name": "Customer 1",
+        "customer_notes": "Men's haircut.",
+        "appt_at_freeform": "2024-12-03 9:00 AM"
+      },
+      {
+        "appt_id": 2,
+        "customer_freeform_name": "Customer 2",
+        "customer_notes": "Hair coloring.",
+        "appt_at_freeform": "2024-12-03 9:45 AM"
+      },
+      {
+        "appt_id": 3,
+        "customer_freeform_name": "Customer 3",
+        "customer_notes": "Nail treatment.",
+        "appt_at_freeform": "2024-12-03 10:30 AM"
+      },
+      {
+        "appt_id": 4,
+        "customer_freeform_name": "Customer 4",
+        "customer_notes": "Beard trim.",
+        "appt_at_freeform": "2024-12-03 11:15 AM"
+      },
+      {
+        "appt_id": 5,
+        "customer_freeform_name": "Customer 5",
+        "customer_notes": "Spa session.",
+        "appt_at_freeform": "2024-12-03 12:00 PM"
+      },
+      {
+        "appt_id": 6,
+        "customer_freeform_name": "Customer 6",
+        "customer_notes": "Facial massage.",
+        "appt_at_freeform": "2024-12-03 12:45 PM"
+      },
+      {
+        "appt_id": 7,
+        "customer_freeform_name": "Customer 7",
+        "customer_notes": "Haircut and shave.",
+        "appt_at_freeform": "2024-12-03 1:30 PM"
+      },
+      {
+        "appt_id": 8,
+        "customer_freeform_name": "Customer 8",
+        "customer_notes": "Pedicure.",
+        "appt_at_freeform": "2024-12-03 2:15 PM"
+      },
+      {
+        "appt_id": 9,
+        "customer_freeform_name": "Customer 9",
+        "customer_notes": "Manicure.",
+        "appt_at_freeform": "2024-12-03 3:00 PM"
+      },
+      {
+        "appt_id": 10,
+        "customer_freeform_name": "Customer 10",
+        "customer_notes": "Hair styling.",
+        "appt_at_freeform": "2024-12-03 3:45 PM"
+      }
     ],
     "bizs": [
-        {
-            "biz_id": 1,
-            "name": "Joe' Barbershop",
-            "description": "We do 'x'. This is our team. We are at Street 1a. Open from 10am. Customers say this about us"
-        }
-    ]
-}
-
-
-
+    {
+      "biz_id": 1,
+      "name": "Joe's Barbershop",
+      "description": "Specialized in men's haircuts and beard styling.",
+      "location": "123 Main St",
+      "rating": "4.5"
+    },
+    {
+      "biz_id": 2,
+      "name": "Alice's Beauty Salon",
+      "description": "Expert in manicures and pedicures.",
+      "location": "456 Elm St",
+      "rating": "4.8"
+    },
+    {
+      "biz_id": 3,
+      "name": "Luxury Spa",
+      "description": "Relaxation massages and skin care treatments.",
+      "location": "789 Pine St",
+      "rating": "4.9"
+    },
+    {
+      "biz_id": 4,
+      "name": "Glamorous Looks",
+      "description": "Makeup services for all occasions.",
+      "location": "321 Maple St",
+      "rating": "4.7"
+    },
+    {
+      "biz_id": 5,
+      "name": "Healthy Hair Studio",
+      "description": "Hair treatments and haircuts.",
+      "location": "654 Oak St",
+      "rating": "4.6"
+    }
+  ]
+  }
   
