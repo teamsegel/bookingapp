@@ -76,10 +76,12 @@ class CreateAppointment(BaseModel):
     appt_at_freeform: str = Field(examples=["Tomorrow at 10am"])
 
 
-@app.post("/appointments", status_code=201)
-def create_appointment(appt: CreateAppointment) -> None:
+@app.post(
+    "/appointments", status_code=201, response_description="The created apointment ID"
+)
+def create_appointment(appt: CreateAppointment) -> int:
     with sqlite3.connect("bookingapp.db", check_same_thread=False) as con:
-        con.execute(
+        cur = con.execute(
             """
 insert into appts(
     customer_freeform_name,
@@ -98,3 +100,7 @@ values (
 """,
             (appt.customer_freeform_name, appt.customer_note, appt.appt_at_freeform),
         )
+        appt_id = cur.lastrowid
+        if appt_id is None:
+            raise Exception("appt_id is None")
+    return appt_id
