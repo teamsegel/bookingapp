@@ -1,8 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { Button, Flex, Heading, TextField } from "@adobe/react-spectrum";
 import "./styles/App.css";
+import {client, readAppointments} from './client/sdk.gen'
+
+client.setConfig({baseUrl: 'http://localhost:8000'})
 
 const App = () => {
+  // example FastAPI usage
+  // look at client/sdk.gen file to see all available functions
+  useEffect(() => {
+    (async () => {
+      const resp = await readAppointments()
+      const appts = resp.data
+      console.log(appts)
+    })()
+  }, [])
+
   const [searchParams, setSearchParams] = useState({
     salonName: "",
     location: "",
