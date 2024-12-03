@@ -1,65 +1,72 @@
 {
-    "appts": [
-      {
-        "appt_id": 1,
-        "customer_freeform_name": "Customer 1",
-        "customer_notes": "Men's haircut.",
-        "appt_at_freeform": "2024-12-03 8:00 AM",
-        "appt_duration": "100min"
-      },
-      {
-        "appt_id": 2,
-        "customer_freeform_name": "Customer 2",
-        "customer_notes": "Hair coloring.",
-        "appt_at_freeform": "2024-12-03 9:45 AM",
-        "appt_duration": "20min"
-      },
-
-      {
-        "appt_id": 3,
-        "customer_freeform_name": "Customer 2",
-        "customer_notes": "Hair coloring.",
-        "appt_at_freeform": "2024-12-03 17:45 AM",
-        "appt_duration": "40min"
-      },
-      {
-        "appt_id": 4,
-        "customer_freeform_name": "Customer 2",
-        "customer_notes": "Hair coloring.",
-        "appt_at_freeform": "2024-12-03 16:45 AM",
-        "appt_duration": "40min"
-      }, 
-      {
-        "appt_id": 5,
-        "customer_freeform_name": "Customer 2",
-        "customer_notes": "Hair coloring.",
-        "appt_at_freeform": "2024-12-03 15:45 AM",
-        "appt_duration": "40min"
-      }, 
-      {
-        "appt_id": 6,
-        "customer_freeform_name": "Customer 2",
-        "customer_notes": "Hair coloring.",
-        "appt_at_freeform": "2024-12-03 10:45 AM",
-        "appt_duration": "40min"
-      }, 
-      {
-        "appt_id": 7,
-        "customer_freeform_name": "Customer 2",
-        "customer_notes": "Hair coloring.",
-        "appt_at_freeform": "2024-12-03 11:45 AM",
-        "appt_duration": "40min"
-      }, 
-      {
-        "appt_id": 8,
-        "customer_freeform_name": "Customer 2",
-        "customer_notes": "Hair coloring.",
-        "appt_at_freeform": "2024-12-03 12:45 PM",
-        "appt_duration": "40min"
-      }
-
-    ],
-    "bizs": [
+  "appts": [
+    {
+      "appt_id": 1,
+      "customer_freeform_name": "Customer 1",
+      "customer_notes": "Men's haircut.",
+      "appt_at_freeform": "2024-12-03 8:00 AM",
+      "appt_duration": "100min"
+    },
+    {
+      "appt_id": 2,
+      "customer_freeform_name": "Customer 2",
+      "customer_notes": "Hair coloring.",
+      "appt_at_freeform": "2024-12-03 9:45 AM",
+      "appt_duration": "20min"
+    },
+    {
+      "appt_id": 3,
+      "customer_freeform_name": "Customer 2",
+      "customer_notes": "Hair coloring.",
+      "appt_at_freeform": "2024-12-03 17:45 AM",
+      "appt_duration": "40min"
+    },
+    {
+      "appt_id": 4,
+      "customer_freeform_name": "Customer 2",
+      "customer_notes": "Hair coloring.",
+      "appt_at_freeform": "2024-12-03 16:45 AM",
+      "appt_duration": "40min"
+    },
+    {
+      "appt_id": 5,
+      "customer_freeform_name": "Customer 2",
+      "customer_notes": "Hair coloring.",
+      "appt_at_freeform": "2024-12-03 15:45 AM",
+      "appt_duration": "40min"
+    },
+    {
+      "appt_id": 6,
+      "customer_freeform_name": "Customer 2",
+      "customer_notes": "Hair coloring.",
+      "appt_at_freeform": "2024-12-03 10:45 AM",
+      "appt_duration": "40min"
+    },
+    {
+      "appt_id": 7,
+      "customer_freeform_name": "Customer 2",
+      "customer_notes": "Hair coloring.",
+      "appt_at_freeform": "2024-12-03 11:45 AM",
+      "appt_duration": "40min"
+    },
+    {
+      "appt_id": 8,
+      "customer_freeform_name": "Customer 2",
+      "customer_notes": "Hair coloring.",
+      "appt_at_freeform": "2024-12-03 12:45 PM",
+      "appt_duration": "40min"
+    },
+    
+    {
+      "id": "74a6",
+      "appt_id": 9,
+      "customer_freeform_name": "hans kammerlander",
+      "customer_notes": "Men's haircut.",
+      "appt_at_freeform": "2024-12-06 09:45 AM",
+      "appt_duration": "200min"
+    }
+  ],
+  "bizs": [
     {
       "biz_id": 1,
       "name": "Joe's Barbershop",
@@ -96,5 +103,4 @@
       "rating": "4.6"
     }
   ]
-  }
-  
+}

@@ -32,10 +32,17 @@ const App = () => {
   const [selectedSalon, setSelectedSalon] = useState(null);
   const [isBusinessPage, setIsBusinessPage] = useState(false);
   const [isBusinessOverviewPage, setIsBusinessOverviewPage] = useState(false);
-  const [businesses, setBusinesses] = useState([]);
   const [events, setEvents] = useState([]);
+  const [showAddAppointmentModal, setShowAddAppointmentModal] = useState(false);
+  const [newAppointment, setNewAppointment] = useState({
+    appt_id: "",
+    customer_freeform_name: "",
+    customer_notes: "",
+    appt_at_freeform: "",
+    appt_duration: "",
+  });
 
-  // Fetch appointments for the calendar
+  // Fetch appointments for the udar
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
@@ -65,6 +72,53 @@ const App = () => {
     fetchAppointments();
   }, []);
 
+  // **Handle Add Appointment Submit**
+  const handleAddAppointmentSubmit = async () => {
+    try {
+        // Fetch current appointments to determine the highest appt_id
+        const response = await fetch("http://localhost:3000/appts");
+        const appointments = await response.json();
+
+        // Calculate the next appt_id
+        const maxApptId = Math.max(...appointments.map(appt => parseInt(appt.appt_id, 10) || 0), 0);
+        const nextApptId = maxApptId + 1;
+
+        // Format the date
+        const formattedDate = moment(newAppointment.appt_at_freeform, "YYYY-MM-DD hh:mm A").format("YYYY-MM-DD hh:mm A");
+
+        // Create the new appointment payload
+        const newAppt = {
+            ...newAppointment,
+            appt_id: nextApptId, // Set the calculated appt_id
+            appt_at_freeform: formattedDate,
+        };
+
+        // Send the new appointment to the fake server
+        const postResponse = await fetch("http://localhost:3000/appts", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newAppt),
+        });
+
+        if (postResponse.ok) {
+            alert("Appointment added successfully!");
+            setShowAddAppointmentModal(false);
+
+            // Refresh appointments list
+            const updatedAppointments = await postResponse.json();
+            setEvents((prevEvents) => [...prevEvents, updatedAppointments]);
+        } else {
+            alert("Failed to add appointment.");
+        }
+    } catch (error) {
+        console.error("Error adding appointment:", error);
+    }
+};
+
+
+
   // **New handleSearch Function**
   const handleSearch = async () => {
     try {
@@ -85,6 +139,8 @@ const App = () => {
       console.error("Error fetching salon data:", error);
     }
   };
+
+
 
   const handleInputChange = (key, value) => {
     setSearchParams({ ...searchParams, [key]: value });
@@ -173,11 +229,14 @@ const App = () => {
             </Button>
           </div>
         </div>
-      ) : isBusinessOverviewPage ? (
+      ) :isBusinessOverviewPage ? (
         <div className="business-overview-section">
           <Heading level={2} className="overview-heading">
             Appointments Overview
           </Heading>
+          <Button variant="primary" onPress={() => setShowAddAppointmentModal(true)} style={{ marginBottom: "20px" }}>
+            Add Appointment
+          </Button>
           <Calendar
             localizer={localizer}
             events={events}
@@ -185,9 +244,42 @@ const App = () => {
             endAccessor="end"
             style={{ height: 600, margin: "50px" }}
             eventPropGetter={eventStyleGetter}
-            tooltipAccessor={(event) => event.description}
           />
+          {showAddAppointmentModal && (
+    <div className="modal">
+        <Heading level={3}>Add New Appointment</Heading>
+        <TextField
+            label="Customer Name"
+            value={newAppointment.customer_freeform_name}
+            onChange={(value) => setNewAppointment({ ...newAppointment, customer_freeform_name: value })}
+        />
+        <TextField
+            label="Notes"
+            value={newAppointment.customer_notes}
+            onChange={(value) => setNewAppointment({ ...newAppointment, customer_notes: value })}
+        />
+        <TextField
+            label="Start Time (e.g., 2024-12-03 9:45 AM)"
+            value={newAppointment.appt_at_freeform}
+            onChange={(value) => setNewAppointment({ ...newAppointment, appt_at_freeform: value })}
+        />
+        <TextField
+            label="Duration (e.g., 20min)"
+            value={newAppointment.appt_duration}
+            onChange={(value) => setNewAppointment({ ...newAppointment, appt_duration: value })}
+        />
+        <Button variant="cta" onPress={handleAddAppointmentSubmit}>
+            Add Appointment
+        </Button>
+        <Button variant="secondary" onPress={() => setShowAddAppointmentModal(false)}>
+            Cancel
+        </Button>
+    </div>
+        )}
         </div>
+
+
+
       ) : !showResults ? (
         <div className="hero-section">
           <Heading level={1} className="hero-text">

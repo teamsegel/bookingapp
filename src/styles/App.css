@@ -228,3 +228,83 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 1rem;
 }
+
+
+/* Add Appointment Button */
+.add-appointment-button {
+    background-color: #28a745; /* Green background */
+    color: #fff; /* White text */
+    padding: 0.75rem 1.5rem; /* Add spacing */
+    font-size: 1rem; /* Standard button font size */
+    border-radius: 5px; /* Rounded corners */
+    border: none; /* Remove default border */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth animations */
+}
+
+.add-appointment-button:hover {
+    background-color: #218838; /* Darker green on hover */
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+.add-appointment-button:active {
+    background-color: #1e7e34; /* Even darker green when active */
+    transform: translateY(1px); /* Slight push down on click */
+}
+
+/* Modal Styling (Enhance for visibility) */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    z-index: 1001;
+    width: 90%;
+    max-width: 500px;
+}
+
+.modal h3 {
+    margin-bottom: 1.5rem;
+}
+
+.modal .spectrum-TextField {
+    margin-bottom: 1rem;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.modal-buttons .secondary-button {
+    background-color: #6c757d;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.modal-buttons .secondary-button:hover {
+    background-color: #5a6268;
+}
+
+.modal-buttons .cta-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.modal-buttons .cta-button:hover {
+    background-color: #0056b3;
+}
