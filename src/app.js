@@ -39,8 +39,8 @@ const App = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await fetch("http://localhost:3000/appts");
-        const appts = await response.json();
+        const resp = await readAppointments()
+        const appts = resp.data
 
         const parsedEvents = appts.map((appt) => {
           const startTime = moment(appt.appt_at_freeform, "YYYY-MM-DD hh:mm A").toDate();
