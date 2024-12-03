@@ -1,7 +1,13 @@
 import sqlite3
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
+from fastapi.routing import APIRoute
 from pydantic import BaseModel, Field
+
+
+def custom_generate_unique_id(route: APIRoute) -> str:
+    """Generate the name for the API endpoint."""
+    return route.name
 
 
 @asynccontextmanager
@@ -26,7 +32,7 @@ async def lifespan(app: FastAPI):
     # shutdown
 
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(generate_unique_id_function=custom_generate_unique_id, lifespan=lifespan)
 
 
 class ReadAppointmentResponse(BaseModel):
