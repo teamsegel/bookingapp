@@ -70,6 +70,33 @@ where appt_id=?
     return appt
 
 
+@app.get("/appointments")
+async def read_appointments() -> list[ReadAppointmentResponse]:
+    """
+    NOTE: Returns max 20 rows!
+    """
+    with sqlite3.connect("bookingapp.db", check_same_thread=False) as con:
+        cur = con.execute(
+            """
+select appt_id, customer_freeform_name, customer_note, appt_at_freeform from appts
+order by created_at_utc desc
+limit 20
+                """
+        )
+        rows = cur.fetchall()
+        appts: list[ReadAppointmentResponse] = []
+        for row in rows:
+            appt_id, customer_freeform_name, customer_note, appt_at_freeform = row
+            appt = ReadAppointmentResponse(
+                appointment_id=appt_id,
+                customer_freeform_name=customer_freeform_name,
+                customer_note=customer_note,
+                appt_at_freeform=appt_at_freeform,
+            )
+            appts.append(appt)
+    return appts
+
+
 class CreateAppointment(BaseModel):
     customer_freeform_name: str = Field(examples=["Bob"])
     customer_note: str = Field(examples=["Men's haircut"])
