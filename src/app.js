@@ -208,7 +208,7 @@ const App = () => {
       {/* Navbar */}
       <nav className="navbar">
         <div className="logo" onClick={resetToBookingPage} style={{ cursor: "pointer" }}>
-          fresha
+          Timy
         </div>
         <Flex direction="row" alignItems="center" gap="size-200">
           <Button variant="primary" className="business-button" onPress={() => setIsBusinessPage(true)}>
