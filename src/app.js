@@ -460,6 +460,8 @@ const App = () => {
           </div>
         </div>
       )}
+    {/* Footer */}
+    <footer className="footer">© 2024 Timy.com</footer>
     </div>
   );
 };
