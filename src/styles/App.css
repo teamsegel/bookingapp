@@ -3,10 +3,11 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100%;
+    width: 100%;
 }
 
 * {
-    box-sizing: inherit; /* Apply box-sizing to all elements */
+    box-sizing: border-box; /* Apply box-sizing to all elements */
 }
 
 /* General Page Styles */
@@ -14,6 +15,11 @@ html, body {
     display: flex;
     flex-direction: column;
     min-height: 100vh; /* Full viewport height */
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #e9c9ff, #b1f4ff); /* Ensure consistent background */
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 
@@ -77,16 +83,16 @@ html, body {
 /* Hero Section */
 .hero-section {
     margin-top: 0;
-    padding: 3rem 0;
+    padding: 0; /* Remove extra padding */
     background: linear-gradient(135deg, #e9c9ff, #b1f4ff);
     background-size: cover; /* Ensure it covers the entire area */
     background-attachment: fixed;
     width: 100vw; /* Full viewport width */
-    min-height: 80vh;
+    min-height: 97vh; /* Ensure full height of the viewport minus navbar */
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center; /* Center content vertically */
     text-align: center;
 }
 
@@ -241,10 +247,13 @@ html, body {
 
 /* Calendar Styles */
 .rbc-calendar {
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 1rem;
+    width: 90%; /* Span 90% of the screen width */
+    max-width: 1200px; /* Optional: Limit maximum width on larger screens */
+    margin: 0 auto; /* Center horizontally */
+    background: #fff; /* Add white background for clarity */
+    border-radius: 10px; /* Optional: Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Add subtle shadow */
+    padding: 1rem; /* Add padding inside the calendar container */
 }
 
 
@@ -341,14 +350,21 @@ html, body {
 .footer {
     background: white;
     text-align: right;
-    padding: 5px 20px; /* Adjust spacing as needed */
+    padding: 5px 20px;
     font-size: 14px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1); /* Optional top border */
+    width: 100%;
+    box-sizing: border-box; /* Include padding in width */
+    margin: 0; /* Remove any unwanted margin */
 }
-  /* Content Wrapper */
-  .content {
-    flex: 1; /* Take remaining space */
+
+/* Content Wrapper */
+.content {
+    flex: 1; /* Pushes the footer to the bottom */
     display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    background: linear-gradient(to bottom, #f5f7fa, #c3cfe2); /* Your gradient background */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Centers content vertically */
+    padding: 2rem;
+    margin: 0;
 }

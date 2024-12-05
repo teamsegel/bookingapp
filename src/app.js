@@ -224,7 +224,9 @@ const App = () => {
       </nav>
 
       {/* Pages */}
+      <div className="content">
       {isBusinessPage ? (
+      <div className="content">
         <div className="business-section">
           <Heading level={2} className="business-heading">
             Add Your Business
@@ -255,6 +257,7 @@ const App = () => {
             </Button>
           </div>
         </div>
+      </div>
       ) :isBusinessOverviewPage ? (
         <div className="business-overview-section">
             <Heading level={2} className="overview-heading">
@@ -460,6 +463,7 @@ const App = () => {
           </div>
         </div>
       )}
+      </div>
     {/* Footer */}
     <footer className="footer">© 2024 Timy.com</footer>
     </div>
