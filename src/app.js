@@ -5,12 +5,28 @@ import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./styles/App.css";
 import {client, readAppointments} from './client/sdk.gen'
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import SalonDetails from "./components/SalonDetails"; // Adjust the path as needed
+
 
 client.setConfig({baseUrl: 'http://localhost:8000'})
 
 const localizer = momentLocalizer(moment);
 
 const App = () => {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/salon/:id" element={<SalonDetails />} />
+      </Routes>
+    </Router>
+  );
+};
+
+
+const HomePage = () => {
+
   // example FastAPI usage
   // look at client/sdk.gen file to see all available functions
   useEffect(() => {
@@ -427,40 +443,25 @@ const App = () => {
             Salons matching your search
           </Heading>
           <div className="results-container">
-            {results.length > 0 ? (
-              results.map((salon) => (
-                <div
-                  className={`salon-card ${selectedSalon?.biz_id === salon.biz_id ? "selected" : ""}`}
-                  key={salon.biz_id}
-                  onClick={() => handleSalonSelect(salon)}
-                >
-                  <div className="salon-details">
-                    <Heading level={3}>{salon.name || "No Name Available"}</Heading>
-                    <p>{salon.description || "No Description Available"}</p>
-                    <p>Location: {salon.location || "No Location Available"}</p>
-                    <p>Rating: {salon.rating || "No Rating Available"}</p>
-                  </div>
-                  {selectedSalon?.biz_id === salon.biz_id && (
-                    <div className="booking-form">
-                      <TextField label="Customer Name" placeholder="Enter your name" flex />
-                      <TextField label="Appointment Note" placeholder="Add a note" flex />
-                      <TextField label="Date" type="date" flex />
-                      <TextField label="Time" type="time" flex />
-                      <Button
-                        variant="cta"
-                        onPress={handleBookingSubmit}
-                        className="submit-button"
-                      >
-                        Confirm Booking
-                      </Button>
-                    </div>
-                  )}
-                </div>
-              ))
-            ) : (
-              <p>No salons found. Try adjusting your search criteria.</p>
-            )}
-          </div>
+  {results.length > 0 ? (
+    results.map((salon) => (
+      <div className="salon-card" key={salon.biz_id}>
+        <div className="salon-details">
+          <Heading level={3}>{salon.name || "No Name Available"}</Heading>
+          <p>{salon.description || "No Description Available"}</p>
+          <p>Location: {salon.location || "No Location Available"}</p>
+          <p>Rating: {salon.rating || "No Rating Available"}</p>
+        </div>
+        <Link to={`/salon/${salon.biz_id}`}>
+          <button className="view-details-button">View Details</button>
+        </Link>
+      </div>
+    ))
+  ) : (
+    <p>No salons found. Try adjusting your search criteria.</p>
+  )}
+</div>
+
         </div>
       )}
       </div>
