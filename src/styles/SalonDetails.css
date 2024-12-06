@@ -1,4 +1,11 @@
 
+html, body {
+    height: 100%; /* Ensure the body spans the full height of the viewport */
+    margin: 0;
+    padding: 0;
+  }
+  
+
 .salon-details {
     padding: 2rem;
     padding-top: 5rem; /* Add space to push content below the navbar */
@@ -181,5 +188,75 @@
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 4px;
+  }
+  
+/* Ensure the page-container takes full viewport height */
+.page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensure it spans the full viewport height */
+  }
+  
+  /* Make the content take remaining space */
+  .content {
+    flex: 1; /* Pushes the footer to the bottom if content is short */
+  }
+  
+  /* Footer styles */
+  .footer {
+    background: white;
+    text-align: right;
+    padding: 5px 20px;
+    font-size: 14px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+  }
+  
+
+  .salon-card-container {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 40px;
+    max-width: 90%;
+    max-height: 80vh;
+    width: 90%;
+    height: 80vh;
+    margin: auto;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .salon-card-container h1 {
+    font-size: 2.5rem;
+    color: #333;
+  }
+  
+  .salon-card-container p {
+    color: #555;
+    font-size: 1.2rem;
+    margin: 10px 0;
+  }
+  
+  .book-appointment-button {
+    margin-top: 20px;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #3174ad;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .book-appointment-button:hover {
+    background-color: #255c8b;
   }
   

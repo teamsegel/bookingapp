@@ -1,10 +1,9 @@
 /* Ensure full-height layout */
 html, body {
+    height: 100%;
     margin: 0;
     padding: 0;
-    height: 100%;
-    width: 100%;
-}
+  }
 
 * {
     box-sizing: border-box; /* Apply box-sizing to all elements */
@@ -157,19 +156,26 @@ html, body {
     align-items: center;
     padding: 1rem;
     text-align: center;
-    cursor: pointer;
+    cursor: pointer; /* Pointer cursor for clickability */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+  }
 
-.salon-card:hover {
-    transform: translateY(-5px);
+
+
+  .salon-card:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-}
+  }
 
 .salon-card.selected {
     transform: scale(1.1);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
+.salon-card:focus {
+    outline: 2px solid #007bff; /* Focus outline for accessibility */
+    transform: translateY(-5px); /* Same lift effect as hover */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  }
 
 /* Salon Details */
 .salon-details {

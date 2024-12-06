@@ -437,15 +437,23 @@ const HomePage = () => {
           <div className="results-container">
   {results.length > 0 ? (
     results.map((salon) => (
-      <div className="salon-card" key={salon.biz_id}>
+      <div
+        className="salon-card"
+        key={salon.biz_id}
+        onClick={() => window.location.href = `/salon/${salon.biz_id}`} // Navigate when clicked
+        role="button"
+        tabIndex={0} // Allow keyboard focus
+        onKeyPress={(e) => {
+          if (e.key === "Enter") {
+            window.location.href = `/salon/${salon.biz_id}`;
+          }
+        }}
+      >
         <div className="salon-details">
           <Heading level={3}>{salon.name || "No Name Available"}</Heading>
           <p>{salon.description || "No Description Available"}</p>
           <p>Location: {salon.location || "No Location Available"}</p>
         </div>
-        <Link to={`/salon/${salon.biz_id}`}>
-          <button className="view-details-button">View Details</button>
-        </Link>
       </div>
     ))
   ) : (

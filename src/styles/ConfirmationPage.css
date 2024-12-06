@@ -1,50 +1,112 @@
-.confirmation-container {
+.page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensure the page spans full height */
+    background: linear-gradient(135deg, #e9c9ff, #b1f4ff);
+  }
+  
+  .content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 80px; /* Adjust to the height of your navbar */
+  }
+  
+  .confirmation-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 40px;
+    width: 90%;
     max-width: 800px;
-    margin: 0 auto; /* Center horizontally */
-    padding: 20px; /* Add padding around the container */
-    padding-top: 80px; /* Add top padding to move below the navbar */
-    background-color: #fff; /* Optional background color */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
   }
   
-  
-  .salon-info {
-    margin-bottom: 20px;
+  .confirmation-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #333;
   }
   
-  .booking-details {
-    margin-bottom: 20px;
-    line-height: 1.5;
+  .salon-info h2 {
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .salon-info p {
+    color: #555;
+    font-size: 1.2rem;
+  }
+  
+  .booking-details p {
+    margin: 0.5rem 0;
+    font-size: 1.2rem;
+    color: #555;
   }
   
   .payment-section {
-    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+  
+  .payment-section h3 {
+    font-size: 1.5rem;
+    color: #333;
   }
   
   .payment-button {
+    margin-top: 10px;
     padding: 10px 20px;
-    border: none;
     background-color: #3174ad;
     color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
     cursor: pointer;
-    font-size: 16px;
+    transition: background-color 0.3s ease;
   }
   
-  .confirm-button {
-    padding: 15px 30px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-size: 18px;
+  .payment-button:hover {
+    background-color: #255c8b;
   }
   
   .important-info {
     margin-top: 20px;
-    font-size: 14px;
+    text-align: left;
     color: #555;
   }
   
   .important-info h4 {
     margin-bottom: 10px;
+  }
+  
+  .important-info p {
+    margin: 5px 0;
+  }
+  
+  .confirm-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .confirm-button:hover {
+    background-color: #218838;
+  }
+  
+  .footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #fff;
+    color: #555;
+    font-size: 0.9rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
   }
   
