@@ -56,7 +56,6 @@
       "appt_at_freeform": "2024-12-03 12:45 PM",
       "appt_duration": "40min"
     },
-    
     {
       "id": "74a6",
       "appt_id": 9,
@@ -67,40 +66,23 @@
     }
   ],
   "bizs": [
-    {
-      "biz_id": 1,
-      "name": "Joe's Barbershop",
-      "description": "Specialized in men's haircuts and beard styling.",
-      "location": "123 Main St",
-      "rating": "4.5"
-    },
-    {
-      "biz_id": 2,
-      "name": "Alice's Beauty Salon",
-      "description": "Expert in manicures and pedicures.",
-      "location": "456 Elm St",
-      "rating": "4.8"
-    },
-    {
-      "biz_id": 3,
-      "name": "Luxury Spa",
-      "description": "Relaxation massages and skin care treatments.",
-      "location": "789 Pine St",
-      "rating": "4.9"
-    },
-    {
-      "biz_id": 4,
-      "name": "Glamorous Looks",
-      "description": "Makeup services for all occasions.",
-      "location": "321 Maple St",
-      "rating": "4.7"
-    },
-    {
-      "biz_id": 5,
-      "name": "Healthy Hair Studio",
-      "description": "Hair treatments and haircuts.",
-      "location": "654 Oak St",
-      "rating": "4.6"
-    }
+    
+  {
+    "biz_id": 1,
+    "name": "Joe's Barbershop",
+    "description": "Specialized in men's haircuts and beard styling.",
+    "location": "123 Main St",
+    "haircut_types": ["Men's Haircut", "Beard Styling"],
+    "professionals": ["Person 1", "Person 2"]
+  },
+  {
+    "biz_id": 2,
+    "name": "Alice's Beauty Salon",
+    "description": "Expert in manicures and pedicures.",
+    "location": "456 Elm St",
+    "haircut_types": ["Women's Haircut", "Manicure"],
+    "professionals": ["Person 1", "Person 2"]
+  }
+
   ]
 }

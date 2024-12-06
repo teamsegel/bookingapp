@@ -8,6 +8,7 @@ import {client, readAppointments} from './client/sdk.gen'
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import SalonDetails from "./components/SalonDetails"; // Adjust the path as needed
 import Navbar from "./components/Navbar";
+import ConfirmationPage from './components/ConfirmationPage';
 
 
 client.setConfig({baseUrl: 'http://localhost:8000'})
@@ -20,6 +21,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/salon/:id" element={<SalonDetails />} />
+        <Route path="/confirm" element={<ConfirmationPage />} />
       </Routes>
     </Router>
   );
@@ -440,7 +442,6 @@ const HomePage = () => {
           <Heading level={3}>{salon.name || "No Name Available"}</Heading>
           <p>{salon.description || "No Description Available"}</p>
           <p>Location: {salon.location || "No Location Available"}</p>
-          <p>Rating: {salon.rating || "No Rating Available"}</p>
         </div>
         <Link to={`/salon/${salon.biz_id}`}>
           <button className="view-details-button">View Details</button>

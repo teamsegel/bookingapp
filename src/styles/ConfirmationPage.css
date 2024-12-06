@@ -1,0 +1,50 @@
+.confirmation-container {
+    max-width: 800px;
+    margin: 0 auto; /* Center horizontally */
+    padding: 20px; /* Add padding around the container */
+    padding-top: 80px; /* Add top padding to move below the navbar */
+    background-color: #fff; /* Optional background color */
+  }
+  
+  
+  .salon-info {
+    margin-bottom: 20px;
+  }
+  
+  .booking-details {
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  
+  .payment-section {
+    margin-bottom: 20px;
+  }
+  
+  .payment-button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #3174ad;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .confirm-button {
+    padding: 15px 30px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+  }
+  
+  .important-info {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .important-info h4 {
+    margin-bottom: 10px;
+  }
+  

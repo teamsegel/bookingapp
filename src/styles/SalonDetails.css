@@ -18,4 +18,168 @@
     font-size: 1.2rem;
     color: #555;
   }
+  .book-appointment-button {
+    margin-top: 1.5rem;
+    padding: 0.8rem 1.5rem;
+    background-color: #3174ad;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .book-appointment-button:hover {
+    background-color: #255c8b;
+  }
+  
+  .book-appointment-button:active {
+    background-color: #1d4871;
+  }
+
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  .haircut-types-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+  }
+  
+  .haircut-type {
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #f9f9f9;
+  }
+  
+  .haircut-type.selected {
+    background-color: #3174ad;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .continue-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #3174ad;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .continue-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+
+  .professional-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+  }
+  
+  .professional {
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    text-align: center;
+  }
+  
+  .professional.selected {
+    background-color: #3174ad;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .modal-content h2 {
+    margin-bottom: 20px;
+  }
+  
+  .modal-content input[type="date"],
+.modal-content input[type="time"] {
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 16px;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.modal-content label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.continue-button {
+  background-color: #3174ad;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.continue-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.social-login-button {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px 0;
+    width: 100%;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .social-login-button:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .or-divider {
+    text-align: center;
+    margin: 15px 0;
+    font-size: 14px;
+    color: #888;
+  }
+  
+  .email-input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
   
