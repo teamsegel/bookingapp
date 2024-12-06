@@ -7,6 +7,7 @@ import "./styles/App.css";
 import {client, readAppointments} from './client/sdk.gen'
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import SalonDetails from "./components/SalonDetails"; // Adjust the path as needed
+import Navbar from "./components/Navbar";
 
 
 client.setConfig({baseUrl: 'http://localhost:8000'})
@@ -222,22 +223,11 @@ const HomePage = () => {
   return (
     <div className="page-container">
       {/* Navbar */}
-      <nav className="navbar">
-        <div className="logo" onClick={resetToBookingPage} style={{ cursor: "pointer" }}>
-          Timy
-        </div>
-        <Flex direction="row" alignItems="center" gap="size-200">
-          <Button variant="primary" className="business-button" onPress={() => setIsBusinessPage(true)}>
-            For business
-          </Button>
-          <Button variant="primary" className="customer-button" onPress={resetToBookingPage}>
-            Customer
-          </Button>
-          <Button variant="primary" className="overview-button" onPress={() => setIsBusinessOverviewPage(true)}>
-            Business Overview
-          </Button>
-        </Flex>
-      </nav>
+      <Navbar
+  resetToBookingPage={resetToBookingPage}
+  setIsBusinessPage={setIsBusinessPage}
+  setIsBusinessOverviewPage={setIsBusinessOverviewPage}
+/>
 
       {/* Pages */}
       <div className="content">
