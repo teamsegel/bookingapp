@@ -40,6 +40,7 @@ async def lifespan(app: FastAPI):
         customer_freeform_name text      not null,
         customer_note          text      not null,
         appt_at_freeform       text      not null,
+        duration_minutes       integer,
         created_at_utc         timestamp not null,
         updated_at_utc         timestamp not null
     )
@@ -165,6 +166,7 @@ class CreateAppointment(BaseModel):
     customer_freeform_name: str = Field(examples=["Bob"])
     customer_note: str = Field(examples=["Men's haircut"])
     appt_at_freeform: str = Field(examples=["Tomorrow at 10am"])
+    duration_minutes: str = Field(examples=[10])
 
 
 @app.post(
@@ -180,18 +182,25 @@ insert into appts(
     customer_freeform_name,
     customer_note,
     appt_at_freeform,
+    duration_minutes,
     created_at_utc,
     updated_at_utc
 )
 values (
-    ?,
-    ?,
-    ?,
+    :customer_freeform_name,
+    :customer_note,
+    :appt_at_freeform,
+    :duration_minutes,
     datetime('now'),
     datetime('now')
 )
 """,
-            (appt.customer_freeform_name, appt.customer_note, appt.appt_at_freeform),
+            {
+                "customer_freeform_name": appt.customer_freeform_name,
+                "customer_note": appt.customer_note,
+                "appt_at_freeform": appt.appt_at_freeform,
+                "duration_minutes": appt.duration_minutes,
+            },
         )
         appt_id = cur.lastrowid
         if appt_id is None:
