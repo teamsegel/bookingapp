@@ -1,5 +1,7 @@
 import sqlite3
-from datetime import datetime, timedelta, timezone
+import numpy as np
+from datetime import datetime, timezone
+import matplotlib.pyplot as plt
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
 from fastapi.routing import APIRoute
@@ -206,3 +208,46 @@ values (
         if appt_id is None:
             raise Exception("appt_id is None")
     return appt_id
+
+
+def viz_slot_allocation():
+    # appt_at_freeform str: 2024-12-03 09:45 AM
+    # time 00-24h or 00-1400m
+    # resolution by minutes
+
+    # 24h x 60min blocks
+    p1 = np.zeros((24, 60), int)
+    p1[0, 0:60] = 1  # 00:00-00:59
+    new_p1 = p1.flatten()
+    new_p1[2 * 60 + 0 : 2 * 60 + 60] |= 2  # 03:00-03:59
+    p1 = new_p1.reshape(p1.shape)
+    p1[3, 0:30] |= 4  # 04:00-04:30
+    new_p1 = p1.flatten()
+    new_p1[3 * 60 + 30 : 3 * 60 + 60] |= 8  # 04:30-04:59
+    p1 = new_p1.reshape(p1.shape)
+
+    # plt.imshow(p1)
+    # plt.show()
+
+    p2 = np.zeros((24, 60), int)
+    p2[1, 0:60] = 1  # 01:00-01:59
+
+    # people-first
+    grid = np.stack((p1, p2), axis=0)
+
+    # np.set_printoptions(threshold=np.inf)
+    # print(grid)
+
+    rows = 1
+    cols = grid.shape[0]
+    canvas_inches = (cols * 8, rows * 8)
+    _, axes = plt.subplots(rows, grid.shape[0], figsize=canvas_inches)
+    for i in range(grid.shape[0]):
+        ax = axes[i]
+        ax.set_title(f"p{i}")
+        ax.imshow(grid[i, :, :], aspect="auto")
+    plt.show()
+
+
+if __name__ == "__main__":
+    viz_slot_allocation()
