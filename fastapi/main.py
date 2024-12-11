@@ -1,9 +1,24 @@
 import sqlite3
+from datetime import datetime, timedelta, timezone
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
 from fastapi.routing import APIRoute
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
+
+
+def adapt_datetime_iso(dt: datetime) -> str:
+    return dt.isoformat()
+
+
+sqlite3.register_adapter(datetime, adapt_datetime_iso)
+
+
+def convert_datetime_iso(date_string: bytes) -> datetime:
+    return datetime.fromisoformat(date_string.decode())
+
+
+sqlite3.register_converter("datetime", convert_datetime_iso)
 
 
 def custom_generate_unique_id(route: APIRoute) -> str:
@@ -15,7 +30,9 @@ def custom_generate_unique_id(route: APIRoute) -> str:
 async def lifespan(app: FastAPI):
     # startup
 
-    with sqlite3.connect("bookingapp.db", check_same_thread=False) as con:
+    with sqlite3.connect(
+        "bookingapp.db", check_same_thread=False, detect_types=sqlite3.PARSE_DECLTYPES
+    ) as con:
         con.execute(
             """
     create table if not exists appts (
@@ -39,11 +56,24 @@ app.add_middleware(
 )
 
 
+class NullDatetime(BaseModel):
+    valid: bool
+    datetime: datetime
+
+
+zero_dt = datetime(year=1970, month=1, day=1, tzinfo=timezone.utc)
+
+
 class ReadAppointmentResponse(BaseModel):
     appointment_id: int = Field(examples=[1])
     customer_freeform_name: str = Field(examples=["Bob"])
     customer_note: str = Field(examples=["Men's haircut"])
     appt_at_freeform: str = Field(examples=["Tomorrow at 10am"])
+    appt_at_utc: NullDatetime = Field(
+        examples=[
+            NullDatetime(valid=False, datetime=zero_dt),
+        ]
+    )
 
 
 class HTTPError(BaseModel):
@@ -53,29 +83,45 @@ class HTTPError(BaseModel):
         schema_extra = {"example": {"detail": "HTTPException"}}
 
 
+def try_datetime_fromisoformat(date_string: str) -> NullDatetime:
+    try:
+        dt = datetime.fromisoformat(date_string)
+        return NullDatetime(valid=True, datetime=dt)
+    except ValueError:  # invalid format
+        return NullDatetime(valid=False, datetime=zero_dt)
+
+
 @app.get(
     "/appointments/{appointment_id}",
     responses={404: {"model": HTTPError, "description": "Not Found"}},
 )
 async def read_appointment(appointment_id: int) -> ReadAppointmentResponse:
-    with sqlite3.connect("bookingapp.db", check_same_thread=False) as con:
+    with sqlite3.connect(
+        "bookingapp.db", check_same_thread=False, detect_types=sqlite3.PARSE_DECLTYPES
+    ) as con:
         cur = con.execute(
             """
 select appt_id, customer_freeform_name, customer_note, appt_at_freeform from appts
-where appt_id=?
+where appt_id=:appt_id
 """,
-            (appointment_id,),
+            {"appt_id": appointment_id},
         )
         row = cur.fetchone()
         if row is None:
             # not found
             raise HTTPException(status_code=404, detail="Appointment not found.")
         appt_id, customer_freeform_name, customer_note, appt_at_freeform = row
+
+        appt_at = try_datetime_fromisoformat(appt_at_freeform)
+        appt_at_utc = appt_at.copy()
+        appt_at_utc.datetime.astimezone(tz=timezone.utc)
+
         appt = ReadAppointmentResponse(
             appointment_id=appt_id,
             customer_freeform_name=customer_freeform_name,
             customer_note=customer_note,
             appt_at_freeform=appt_at_freeform,
+            appt_at_utc=appt_at_utc,
         )
     return appt
 
@@ -85,7 +131,9 @@ async def read_appointments() -> list[ReadAppointmentResponse]:
     """
     NOTE: Returns max 20 rows!
     """
-    with sqlite3.connect("bookingapp.db", check_same_thread=False) as con:
+    with sqlite3.connect(
+        "bookingapp.db", check_same_thread=False, detect_types=sqlite3.PARSE_DECLTYPES
+    ) as con:
         cur = con.execute(
             """
 select appt_id, customer_freeform_name, customer_note, appt_at_freeform from appts
@@ -97,11 +145,17 @@ limit 20
         appts: list[ReadAppointmentResponse] = []
         for row in rows:
             appt_id, customer_freeform_name, customer_note, appt_at_freeform = row
+
+            appt_at = try_datetime_fromisoformat(appt_at_freeform)
+            appt_at_utc = appt_at.copy()
+            appt_at_utc.datetime.astimezone(tz=timezone.utc)
+
             appt = ReadAppointmentResponse(
                 appointment_id=appt_id,
                 customer_freeform_name=customer_freeform_name,
                 customer_note=customer_note,
                 appt_at_freeform=appt_at_freeform,
+                appt_at_utc=appt_at_utc,
             )
             appts.append(appt)
     return appts
@@ -117,7 +171,9 @@ class CreateAppointment(BaseModel):
     "/appointments", status_code=201, response_description="The created apointment ID"
 )
 def create_appointment(appt: CreateAppointment) -> int:
-    with sqlite3.connect("bookingapp.db", check_same_thread=False) as con:
+    with sqlite3.connect(
+        "bookingapp.db", check_same_thread=False, detect_types=sqlite3.PARSE_DECLTYPES
+    ) as con:
         cur = con.execute(
             """
 insert into appts(
