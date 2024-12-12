@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Flex, Heading, TextField } from "@adobe/react-spectrum";
+import { Button, Flex, Heading, TextField, Item, ListView, Text, Tabs, TabList, TabPanels } from "@adobe/react-spectrum";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -20,12 +20,178 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/available" element={<AvailablePage />} />
         <Route path="/salon/:id" element={<SalonDetails />} />
         <Route path="/confirm" element={<ConfirmationPage />} />
       </Routes>
     </Router>
   );
 };
+
+const AvailablePage = () => {
+    //const slots = []
+    //const workingFrom = 8
+    //const workingUntil = 17
+    //for (let i = 0; i < workingUntil-workingFrom; i += 1) {
+    //    //for (let j = 0; j < 10
+    //    slots[i] = {
+    //        id: i,
+    //        hour: i+workingFrom, // number
+    //        isAvailable: false, // boolean
+    //    }
+    //}
+    //console.log(slots)
+
+    const slots = [
+        {
+            id: 0,
+            hour: 9,
+            minute: 0,
+            priceEUR: 10,
+        },
+        {
+            id: 1,
+            hour: 10,
+            minute: 0,
+            priceEUR: 10,
+        },
+        {
+            id: 2,
+            hour: 10,
+            minute: 15,
+            priceEUR: 10,
+        },
+        {
+            id: 3,
+            hour: 10,
+            minute: 15,
+            priceEUR: 10,
+        },
+        {
+            id: 4,
+            hour: 10,
+            minute: 30,
+            priceEUR: 10,
+        },
+        {
+            id: 5,
+            hour: 10,
+            minute: 45,
+            priceEUR: 10,
+        },
+        {
+            id: 6,
+            hour: 11,
+            minute: 0,
+            priceEUR: 10,
+        },
+        {
+            id: 7,
+            hour: 11,
+            minute: 15,
+            priceEUR: 10,
+        },
+        {
+            id: 8,
+            hour: 11,
+            minute: 30,
+            priceEUR: 10,
+        },
+        {
+            id: 9,
+            hour: 11,
+            minute: 45,
+            priceEUR: 10,
+        },
+        {
+            id: 10,
+            hour: 12,
+            minute: 0,
+            priceEUR: 10,
+        },
+        {
+            id: 11,
+            hour: 13,
+            minute: 0,
+            priceEUR: 10,
+        },
+    ]
+
+    const startDate = 14
+    const endDate = 30
+    const dates = []
+    const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    for (let i = 0; i <= endDate - startDate; i += 1) {
+        const dayName = dayNames[(i+5)%7]
+        const dayInMonth = (i+startDate).toString()
+        dates[i] = {
+            key: dayName + dayInMonth,
+            dayInMonth: dayInMonth,
+            dayName: dayName,
+        }
+    }
+
+    //console.log(dates)
+
+    //return <div></div>
+
+    //return (
+    //    <Tabs aria-label="History of Ancient Rome">
+    //      <TabList>
+    //        {["FoR"].forEach((it) => <Item key={it}>Founding of Rome</Item>)}
+    //      </TabList>
+    //      <TabPanels>
+    //        {["FoR"].forEach((it) => <Item key={it}>Founding of Rome</Item>)}
+    //      </TabPanels>
+    //    </Tabs>
+    //)
+
+    return (
+        <div className="page-container">
+            <Tabs items={dates}>
+            <div style={{width: '100%', overflowX: 'scroll'}}>
+            <div style={{width: '150%'}}>
+                <TabList>
+                    {(d) => {
+                        return (
+                            <Item key={d.key}>{d.dayInMonth} {d.dayName}</Item>
+                        )
+                    }}
+                </TabList>
+            </div>
+            </div>
+                <TabPanels>
+                    {(d) => {
+                        return (
+                            <Item key={d.key}>
+                                <ListView items={slots}>
+                                    {(slot) => {
+                                        const formatTimeNumber = (minute /* number */) /* string */ => {
+                                            const s = minute.toString()
+                                            if (s.length <= 1) {
+                                                return `0${s}`
+                                            }
+                                            return s
+                                        }
+                                        // radomize by dayInMonth
+                                        const formattedHour = formatTimeNumber(slot.hour + d.dayInMonth%4)
+                                        const formattedMinute = formatTimeNumber(slot.minute)
+                                        return (
+                                            <Item>
+                                                <Text>{formattedHour}:{formattedMinute}</Text>
+                                                <Text slot="description">€ {slot.priceEUR * (slot.hour%2*d.dayInMonth%4+1)}</Text>
+                                            </Item>
+                                        )
+                                    }}
+                                </ListView>
+                            </Item>
+                        )
+                    }}
+                </TabPanels>
+            </Tabs>
+        </div>
+    )
+}
 
 
 const HomePage = () => {
