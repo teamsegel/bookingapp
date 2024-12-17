@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button, Flex, Heading, TextField, Item, ListView, Text, Tabs, TabList, TabPanels } from "@adobe/react-spectrum";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
+import mapboxgl from 'mapbox-gl'
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./styles/App.css";
 import {client, readAppointments} from './client/sdk.gen'
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import SalonDetails from "./components/SalonDetails"; // Adjust the path as needed
 import Navbar from "./components/Navbar";
 import ConfirmationPage from './components/ConfirmationPage';
+import 'mapbox-gl/dist/mapbox-gl.css'
 
 
 client.setConfig({baseUrl: 'http://localhost:8000'})
@@ -21,12 +23,50 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/available" element={<AvailablePage />} />
+        <Route path="/maps" element={<MapPage />} />
         <Route path="/salon/:id" element={<SalonDetails />} />
         <Route path="/confirm" element={<ConfirmationPage />} />
       </Routes>
     </Router>
   );
 };
+
+const MapPage = () => {
+    const mapRef = useRef()
+    const mapContainerRef = useRef()
+
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition(
+            (pos) => {
+                console.log(pos.coords)
+                mapRef.current.flyTo({
+                    center: [pos.coords.longitude, pos.coords.latitude],
+                    zoom: 12.34,
+                })
+            },
+            (error) => {
+                console.error('geolocation error', error)
+            },
+            { enableHighAccuracy: true},
+        );
+
+        mapboxgl.accessToken = ''
+        mapRef.current = new mapboxgl.Map({
+            container: mapContainerRef.current,
+            center: [14.50694, 46.04984],
+            zoom: 11.11,
+        })
+        return () => {
+            mapRef.current.remove()
+        }
+    }, [])
+
+    return (
+        <div class="map-wrapper">
+            <div id="map-container" ref={mapContainerRef}></div>
+        </div>
+    )
+}
 
 const AvailablePage = () => {
     //const slots = []
